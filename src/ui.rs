@@ -27,32 +27,40 @@ impl Default for UiState {
 
 pub struct Ui {
     knob: Knob,
-    _button_a: Button,
-    _button_b: Button,
+    button_a: Button,
+    button_b: Button,
     state: UiState,
 }
 
 impl Ui {
-    pub fn new(knob: Knob, _button_a: Button, _button_b: Button) -> Self {
+    pub fn new(knob: Knob, button_a: Button, button_b: Button) -> Self {
         Self {
             knob,
-            _button_a,
-            _button_b,
+            button_a,
+            button_b,
             state: UiState::default(),
         }
     }
 
     pub async fn run(&mut self) -> ! {
-        self.state.levels[2] = self.knob.measure().await;
+        let mut rgb_value = 1;
+        self.state.levels[rgb_value] = self.knob.measure().await;
         set_rgb_levels(|rgb| {
             *rgb = self.state.levels;
         })
         .await;
         self.state.show();
         loop {
+            if self.button_a.is_low() && self.button_b.is_low() {
+                rgb_value = 0
+            } else if self.button_a.is_low() {
+                rgb_value = 2
+            } else if self.button_b.is_low() {
+                rgb_value = 1
+            }
             let level = self.knob.measure().await;
-            if level != self.state.levels[2] {
-                self.state.levels[2] = level;
+            if level != self.state.levels[rgb_value] {
+                self.state.levels[rgb_value] = level;
                 self.state.show();
                 set_rgb_levels(|rgb| {
                     *rgb = self.state.levels;
