@@ -45,3 +45,9 @@ features = ["critical-section-single-core"]
 
 [profile.release]
 debug = 2
+
+# I had to add this to remove some weird rust-analyzer error
+[[bin]]
+name = "mb2-embassy-rgb"
+test = false
+bench = false
