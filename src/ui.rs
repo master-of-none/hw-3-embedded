@@ -75,9 +75,7 @@ impl Ui {
     ///
     /// Function returns nothing.
     pub async fn run(&mut self) -> ! {
-        // Measure the knob position.
-        // let level = self.knob.measure().await;
-
+        // Check for button state to set the initial LED configuration.
         if self.button_a.is_low() && self.button_b.is_low() {
             self.initial_state(0).await
         } else if self.button_a.is_low() {
@@ -114,6 +112,17 @@ impl Ui {
             Timer::after_millis(50).await;
         }
     }
+
+    /// Function to change the LED color.
+    ///
+    /// # Arguments
+    ///
+    /// `level` - The level of LED color
+    /// * `rgb_value` - RGB value to be changed 0 for R, 1 for G and 2 for B.
+    ///
+    /// # Returns
+    ///
+    /// Returns nothing
     async fn change_led(&mut self, level: u32, rgb_value: usize) {
         if level != self.state.levels[rgb_value] {
             self.state.levels[rgb_value] = level;
@@ -125,6 +134,16 @@ impl Ui {
             .await;
         }
     }
+
+    /// Function to change the Frame Rate
+    ///
+    /// # Arguments
+    ///
+    /// * `level` - The level such that frame rate is changed
+    ///
+    /// # Returns
+    ///
+    /// Function returns nothing.
     async fn change_frame_rate(&mut self, level: u32) {
         if level != self.state.frame_rate as u32 {
             self.state.frame_rate = ((level * 10) + 10) as u64;
@@ -136,6 +155,16 @@ impl Ui {
             .await;
         }
     }
+
+    /// Function to set the initial state of the LED
+    ///
+    /// # Arguments
+    ///
+    /// * `rgb_value` - RGB value to be changed 0 for R, 1 for G and 2 for B.
+    ///
+    /// # Returns
+    ///
+    /// Function returns nothing.
     async fn initial_state(&mut self, rgb_value: usize) {
         // Initialize the default RGB value to adjust.
         // Measure the knob position and set initial RGB levels.
