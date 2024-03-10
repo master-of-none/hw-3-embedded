@@ -51,6 +51,15 @@ impl Ui {
         .await;
         self.state.show();
         loop {
+            let level = self.knob.measure().await;
+            if level != self.state.frame_rate as u32 {
+                self.state.frame_rate = ((level * 10) + 10) as u64;
+                self.state.show();
+                set_frames(|frame_rate| {
+                    *frame_rate = self.state.frame_rate as u32;
+                })
+                .await;
+            }
             if self.button_a.is_low() && self.button_b.is_low() {
                 rgb_value = 0
             } else if self.button_a.is_low() {
@@ -58,7 +67,6 @@ impl Ui {
             } else if self.button_b.is_low() {
                 rgb_value = 1
             }
-            let level = self.knob.measure().await;
             if level != self.state.levels[rgb_value] {
                 self.state.levels[rgb_value] = level;
                 self.state.show();
