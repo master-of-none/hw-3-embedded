@@ -75,21 +75,25 @@ impl Ui {
     ///
     /// Function returns nothing.
     pub async fn run(&mut self) -> ! {
-        // // Initialize the default RGB value to adjust.
-        // let mut rgb_value = 1;
-        // // Measure the knob position and set initial RGB levels.
-        // self.state.levels[rgb_value] = self.knob.measure().await;
-        // // Call the setter function to set RGB
-        // set_rgb_levels(|rgb| {
-        //     *rgb = self.state.levels;
-        // })
-        // .await;
-        // // Display the initial state of UI.
-        // self.state.show();
+        // Measure the knob position.
+        // let level = self.knob.measure().await;
 
+        if self.button_a.is_low() && self.button_b.is_low() {
+            self.initial_state(0).await
+        } else if self.button_a.is_low() {
+            self.initial_state(2).await
+        } else if self.button_b.is_low() {
+            self.initial_state(1).await
+        }
+        // Call the setter function to set RGB
+        set_rgb_levels(|rgb| {
+            *rgb = self.state.levels;
+        })
+        .await;
+        // Display the initial state of UI.
+        self.state.show();
         // Core UI Loop
         loop {
-            // Measure the knob position.
             let level = self.knob.measure().await;
             // Check button to adjust color levels and frame rate.
             if self.button_a.is_high() && self.button_b.is_high() {
@@ -131,5 +135,10 @@ impl Ui {
             })
             .await;
         }
+    }
+    async fn initial_state(&mut self, rgb_value: usize) {
+        // Initialize the default RGB value to adjust.
+        // Measure the knob position and set initial RGB levels.
+        self.state.levels[rgb_value] = self.knob.measure().await;
     }
 }
