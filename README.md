@@ -60,3 +60,8 @@ will eat CPU for no reason.
 
 I think the frame rate is probably set higher than it needs
 to be right now: it can be tuned lower.
+
+## RGB Value
+R - 15 <br>
+G - 4 <br>
+B - 6 <br>
