@@ -1,5 +1,6 @@
 # rgbcal: RGB LED calibration tool
 Bart Massey 2024
+Added further code and submitted by: Shrikrishna Bhat
 
 This tool is designed to find out a decent frame rate and
 maximum RGB component values to produce a white-looking RGB
@@ -66,3 +67,21 @@ to be right now: it can be tuned lower.
 R - 15 <br>
 G - 4 <br>
 B - 6 <br>
+
+## Methodology
+1. I had to add code for blue LED and Green LED.
+2. First I added a function ```initial_state``` such that the even before the code starts running and we press the button a or button b, the rgb starts with color blue or green.
+3. Next was adding 2 functions ```change_frame_rate``` and ```change_led``` such that when nothing is pressed only frame rate changes and when buttons are pressed, depending on the button it's R or G or B.
+4. Change led function code was already implemented and i just made a different function such that it's much easier to read the code and efficiently change the color of LED based on the requirement.
+5. Changing the frame rate required a little careful evaluation.
+Here same as the change_led, I used setter and getters concept to make this functioanlilty live. Since the frame rate should be between 10 and 160, I multiplied the level by 10 and then added 10 each time the knob was turned to change the frames. Then I called the setter to set the frames.
+6. In the main I added codes for getting and setting th frame_rate. THis setter and getter is same as the setter and getter for RGB.
+7. In the RGB file I had to get the frames such that frame rate is sent to tick_time such that time interval is calculated for each frames to be displayed. Hence when frames is 0 the LED starts blinking.
+8. Knob file does not have any changes because it is just changing the knob.
+
+## Interesting things observed
+1. In RGB when R was set to 15 and G is set between 4-6 and B is set between 6-9, it just looked that it was different shades of white. I had a converstaion with my friends showing the LED that these are different shades of white and they were convinced that these were the same white color.
+2. As the professor mentioned, I checked the CPU usage and when frames were high, there was indeed some additional CPU usage.
+
+## Sources
+- Majority of the code was just refactoring the given code and setters and getters for frames were just done using the same code for RGB.
