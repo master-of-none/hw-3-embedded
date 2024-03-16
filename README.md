@@ -1,5 +1,5 @@
 # rgbcal: RGB LED calibration tool
-Bart Massey 2024
+Bart Massey 2024 <br>
 Added further code and submitted by: Shrikrishna Bhat
 
 This tool is designed to find out a decent frame rate and
